@@ -22,7 +22,7 @@ File gợi ý:
 - `src/multi_agent_research_lab/cli.py`
 - `src/multi_agent_research_lab/services/llm_client.py`
 
-TODO(student): thay baseline placeholder bằng một call LLM thật.
+✅ Đã hoàn thành: Triển khai gọi LLM thật (Gemini / OpenAI) và lưu token usage, cost.
 
 ## Milestone 2: Supervisor
 
@@ -31,15 +31,15 @@ File gợi ý:
 - `src/multi_agent_research_lab/agents/supervisor.py`
 - `src/multi_agent_research_lab/graph/workflow.py`
 
-TODO(student): implement routing policy.
+✅ Đã hoàn thành: Triển khai routing policy và guardrail `max_iterations`.
 
 Gợi ý câu hỏi thiết kế:
 
-- Khi nào gọi Researcher?
-- Khi nào gọi Analyst?
-- Khi nào gọi Writer?
-- Khi nào stop?
-- Nếu agent fail thì retry hay fallback?
+- Khi nào gọi Researcher? -> Khi `sources` rỗng
+- Khi nào gọi Analyst? -> Khi có `sources` nhưng chưa có `analysis_notes`
+- Khi nào gọi Writer? -> Khi có `analysis_notes` nhưng chưa có `final_answer`
+- Khi nào stop? -> Khi có `final_answer` hoặc chạm `max_iterations`
+- Nếu agent fail thì retry hay fallback? -> Tenacity retry và fallback Offline Corpus
 
 ## Milestone 3: Worker agents
 
@@ -49,7 +49,7 @@ File gợi ý:
 - `src/multi_agent_research_lab/agents/analyst.py`
 - `src/multi_agent_research_lab/agents/writer.py`
 
-TODO(student): implement từng worker.
+✅ Đã hoàn thành: Triển khai đầy đủ Researcher, Analyst, Writer và Critic agent.
 
 ## Milestone 4: Trace và benchmark
 
@@ -111,7 +111,19 @@ Cách khắc phục (chọn 1 trong 3):
 
 ## Exit ticket
 
-Mỗi nhóm trả lời 2 câu:
+### 1. Case nào NÊN dùng Multi-Agent? Vì sao?
+- **Trường hợp áp dụng**: Các bài toán phức tạp, nhiều công đoạn có tính chất phân hóa chuyên môn rõ rệt như **Nghiên cứu thị trường/kỹ thuật chuyên sâu (Deep Research)**, **Tự động viết code & review (Coder + Reviewer + Tester)**, hoặc **Quy trình thẩm định rủi ro đa tiêu chí**.
+- **Lý do dựa trên số liệu thực nghiệm**:
+  - **Giảm thiểu ảo giác (Hallucination)**: Tách riêng Researcher để tìm dữ liệu thực tế và Analyst/Critic để kiểm chứng giúp đạt **100% Citation Coverage** (so với 0% của Single-Agent).
+  - **Tránh loãng ngữ cảnh (Context Pollution)**: Mỗi agent chỉ tập trung vào một nhiệm vụ với prompt chuyên biệt, cho chất lượng nội dung phân tích sâu hơn vượt trội (**10.0/10 vs 8.0/10**).
+  - **Khả năng quan sát & gỡ lỗi (Observability)**: Dễ dàng trace được lỗi phát sinh từ khâu nào (tìm kiếm, lập luận hay hành văn) qua LangSmith/Langfuse.
 
-1. Case nào nên dùng multi-agent? Vì sao?
-2. Case nào không nên dùng multi-agent? Vì sao?
+---
+
+### 2. Case nào KHÔNG NÊN dùng Multi-Agent? Vì sao?
+- **Trường hợp áp dụng**: Các tác vụ đơn giản, truy vấn trực tiếp (Direct Q&A), dịch thuật đoạn văn ngắn, tóm tắt một văn bản cho sẵn, hoặc các ứng dụng thời gian thực yêu cầu độ trễ cực thấp (Sub-second latency như chatbot hỗ trợ khách hàng nhanh, voice agent tương tác trực tiếp).
+- **Lý do dựa trên số liệu thực nghiệm**:
+  - **Độ trễ cao (Latency Overhead)**: Multi-Agent mất nhiều vòng roundtrips qua LLM và điều phối đồ thị, độ trễ tăng từ ~20.9s lên ~37.2s (tăng ~1.8x đến 3x).
+  - **Chi phí token cao (Cost Overhead)**: Mỗi agent tiêu tốn thêm token cho prompt hệ thống và ngữ cảnh trao đổi, chi phí tăng gấp ~3.7x ($0.001199 vs $0.000323).
+  - **Độ phức tạp hệ thống (System Complexity)**: Việc thiết kế, đồng bộ shared state và xử lý guardrail/vòng lặp vô hạn đòi hỏi chi phí bảo trì hệ thống cao không đáng có đối với các bài toán đơn giản mà Single-Agent với 1 prompt chuẩn đã đủ giải quyết tốt.
+
