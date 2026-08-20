@@ -1,5 +1,11 @@
 # Multi-Agent Research System - Architecture & Design Document
 
+> **Thông tin sinh viên / Học viên:**
+> - **Họ và tên:** Nguyễn Mai Nhật Anh
+> - **Mã số sinh viên (MSSV):** 2A202601826
+> - **Lớp / Khóa:** K4
+> - **Bài Lab:** Lab 20 - Multi-Agent Research System
+
 ## Problem
 Xây dựng một hệ thống AI Research Assistant tự động hóa quy trình nghiên cứu chuyên sâu: nhận truy vấn phức tạp từ người dùng, tìm kiếm nguồn tài liệu thực tế, phân tích đánh giá đa chiều, tổng hợp luận điểm và soạn thảo báo cáo kỹ thuật hoàn chỉnh kèm trích dẫn nguồn minh bạch (inline citations & references).
 

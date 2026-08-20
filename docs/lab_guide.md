@@ -111,6 +111,8 @@ Cách khắc phục (chọn 1 trong 3):
 
 ## Exit ticket
 
+> **Học viên:** Nguyễn Mai Nhật Anh | **MSSV:** 2A202601826
+
 ### 1. Case nào NÊN dùng Multi-Agent? Vì sao?
 - **Trường hợp áp dụng**: Các bài toán phức tạp, nhiều công đoạn có tính chất phân hóa chuyên môn rõ rệt như **Nghiên cứu thị trường/kỹ thuật chuyên sâu (Deep Research)**, **Tự động viết code & review (Coder + Reviewer + Tester)**, hoặc **Quy trình thẩm định rủi ro đa tiêu chí**.
 - **Lý do dựa trên số liệu thực nghiệm**:

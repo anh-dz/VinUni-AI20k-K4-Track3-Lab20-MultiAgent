@@ -33,8 +33,17 @@ console = Console()
 
 
 def _init() -> None:
+    import os
+
     settings = get_settings()
     configure_logging(settings.log_level)
+
+    if settings.langsmith_api_key:
+        os.environ["LANGCHAIN_TRACING_V2"] = "true"
+        os.environ["LANGCHAIN_API_KEY"] = settings.langsmith_api_key
+        os.environ["LANGCHAIN_PROJECT"] = settings.langsmith_project
+        if settings.langsmith_endpoint:
+            os.environ["LANGCHAIN_ENDPOINT"] = settings.langsmith_endpoint
 
 
 def _parse_query(
